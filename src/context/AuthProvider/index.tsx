@@ -13,6 +13,10 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
       const user = getLocalStorage('user');
       const token = getLocalStorage('token');
 
+      if (!user || !token) {
+        localStorage.clear();
+      }
+
       if (user && token) {
         setAuth({ user, token, authorized: true });
         Api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
