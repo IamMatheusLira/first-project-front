@@ -9,12 +9,16 @@ export const AuthProvider = ({ children }: IAuthProvider) => {
   const [auth, setAuth] = useState<IAuth | null>();
 
   useEffect(() => {
-    const user = getLocalStorage('user');
-    const token = getLocalStorage('token');
+    try {
+      const user = getLocalStorage('user');
+      const token = getLocalStorage('token');
 
-    if (user && token) {
-      setAuth({ user, token, authorized: true });
-      Api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      if (user && token) {
+        setAuth({ user, token, authorized: true });
+        Api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+    } catch (e) {
+      localStorage.clear();
     }
   }, []);
 
